@@ -1,0 +1,35 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Solar Daytopper Configureren",
+        "description": "Voer de host URL in voor je Solar Daytopper apparaat",
+        "data": {
+          "host": "Host URL"
+        }
+      }
+    },
+    "error": {
+      "invalid_host": "Ongeldig host URL formaat. Gebruik een formaat zoals http://192.168.1.100 of http://daytopper.local",
+      "cannot_connect": "Kan geen verbinding maken met de opgegeven host. Als daytopper.local niet werkt, probeer het IP-adres (bijv. http://192.168.1.100). Controleer de URL en netwerkverbinding."
+    },
+    "abort": {
+      "already_configured": "Er is slechts één configuratie van Solar Daytopper toegestaan."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Solar Daytopper Opties Configureren",
+        "description": "Werk de host URL bij voor je Solar Daytopper apparaat",
+        "data": {
+          "host": "Host URL"
+        }
+      }
+    },
+    "error": {
+      "invalid_host": "Ongeldig host URL formaat. Gebruik een formaat zoals http://192.168.1.100",
+      "cannot_connect": "Kan geen verbinding maken met de opgegeven host. Controleer de URL en netwerkverbinding."
+    }
+  }
+}
