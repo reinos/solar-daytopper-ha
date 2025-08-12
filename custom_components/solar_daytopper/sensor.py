@@ -124,19 +124,52 @@ class SolarDaytopperSensor(CoordinatorEntity, SensorEntity):
     def native_value(self):
         data = self.coordinator.data
         try:
-            # Special handling for the last update timestamp
-            if self._path == ["_last_update"]:
-                timestamp_str = data.get("_last_update")
+            # Special handling for timestamp sensors
+            if self._attr_device_class == "timestamp":
+                if self._path == ["_last_update"]:
+                    timestamp_str = data.get("_last_update")
+                elif self._path == ["system", "upSince"]:
+                    # Navigate to the upSince field
+                    timestamp_str = data.get("system", {}).get("upSince")
+                elif self._path == ["system", "lastApiCall"]:
+                    # Navigate to the lastApiCall field (Unix timestamp)
+                    timestamp_value = data.get("system", {}).get("lastApiCall")
+                    if timestamp_value:
+                        try:
+                            # Convert Unix timestamp to datetime
+                            dt = datetime.fromtimestamp(timestamp_value)
+                            # Add local timezone
+                            dt = dt_util.as_local(dt)
+                            return dt
+                        except (ValueError, OSError) as err:
+                            _LOGGER.warning("Error parsing Unix timestamp %s for %s: %s", timestamp_value, self._attr_name, err)
+                            return None
+                    return None
+                else:
+                    timestamp_str = None
+                
                 if timestamp_str:
                     try:
-                        # Parse the ISO string and add timezone info
-                        dt = datetime.fromisoformat(timestamp_str)
+                        # Try different timestamp formats
+                        if self._path == ["_last_update"]:
+                            # ISO format: 2025-08-12T16:34:14.453838
+                            dt = datetime.fromisoformat(timestamp_str)
+                        elif self._path == ["system", "upSince"]:
+                            # Simple format: 2025-08-11 07:35:06
+                            dt = datetime.strptime(timestamp_str, "%Y-%m-%d %H:%M:%S")
+                        else:
+                            # Try to parse as ISO first, then simple format
+                            try:
+                                dt = datetime.fromisoformat(timestamp_str.replace("Z", "+00:00"))
+                            except ValueError:
+                                dt = datetime.strptime(timestamp_str, "%Y-%m-%d %H:%M:%S")
+                        
                         # If no timezone info, assume local timezone
                         if dt.tzinfo is None:
                             dt = dt_util.as_local(dt)
                         return dt
                     except ValueError as err:
-                        _LOGGER.warning("Error parsing timestamp %s: %s", timestamp_str, err)
+                        _LOGGER.warning("Error parsing timestamp %s for %s: %s", timestamp_str, self._attr_name, err)
                         return None
                 return None
             
