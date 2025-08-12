@@ -17,6 +17,7 @@ SYSTEM_SENSORS = [
     ("Solar Daytopper Uptime", ["system", "upSince"], None, None, None, 1),
     ("Solar Daytopper Firmware Version", ["system", "firmwareVersion"], None, None, None, 1),
     ("Solar Daytopper IP", ["system", "ip"], None, None, None, 1),
+    ("Solar Daytopper Last Updated", ["_last_update"], None, "timestamp", None, 1),
 ]
 
 # Template for dynamic inverter sensors

@@ -1,8 +1,10 @@
 import logging
+from datetime import datetime
 
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.helpers.entity import DeviceInfo
+from homeassistant.util import dt as dt_util
 
 from .const import DOMAIN, MAIN_SENSORS, SYSTEM_SENSORS, INVERTER_SENSOR_TEMPLATE
 
@@ -122,6 +124,22 @@ class SolarDaytopperSensor(CoordinatorEntity, SensorEntity):
     def native_value(self):
         data = self.coordinator.data
         try:
+            # Special handling for the last update timestamp
+            if self._path == ["_last_update"]:
+                timestamp_str = data.get("_last_update")
+                if timestamp_str:
+                    try:
+                        # Parse the ISO string and add timezone info
+                        dt = datetime.fromisoformat(timestamp_str)
+                        # If no timezone info, assume local timezone
+                        if dt.tzinfo is None:
+                            dt = dt_util.as_local(dt)
+                        return dt
+                    except ValueError as err:
+                        _LOGGER.warning("Error parsing timestamp %s: %s", timestamp_str, err)
+                        return None
+                return None
+            
             for key in self._path:
                 data = data.get(key, {})
 

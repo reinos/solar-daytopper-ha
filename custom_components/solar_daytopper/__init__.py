@@ -1,7 +1,7 @@
 import aiohttp
 import asyncio
 import logging
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 from homeassistant.core import HomeAssistant
 from homeassistant.config_entries import ConfigEntry
@@ -34,6 +34,10 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                     _LOGGER.debug("Received response with status: %s", response.status)
                     response.raise_for_status()
                     data = await response.json()
+                    
+                    # Add timestamp when data was fetched
+                    data["_last_update"] = datetime.now().isoformat()
+                    
                     _LOGGER.debug("Successfully fetched data: %s keys", list(data.keys()) if isinstance(data, dict) else "non-dict data")
                     return data
         except asyncio.TimeoutError:
