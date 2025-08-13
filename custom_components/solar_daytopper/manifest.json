@@ -1,12 +1,12 @@
 {
   "domain": "solar_daytopper",
   "name": "Solar Daytopper",
-  "version": "1.0.0",
-  "documentation": "https://www.solar-daytopper.com/faq/connecting-to-home-assistant",
+  "codeowners": ["@reinos"],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://www.solar-daytopper.com/en/docs/home-assistant-integration",
+  "iot_class": "local_polling",
   "issue_tracker": "https://github.com/reinos/solar-daytopper-hacs/issues",
   "requirements": ["aiohttp"],
-  "dependencies": [],
-  "codeowners": ["@reinos"],
-  "iot_class": "local_polling",
-  "config_flow": true
+  "version": "1.0.0"
 }
