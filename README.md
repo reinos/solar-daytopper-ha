@@ -65,4 +65,4 @@ For each connected inverter (e.g., Solax, Enphase):
 
 For issues related to this Home Assistant integration, please use the [GitHub Issues](https://github.com/reinos/solar-daytopper-hacs/issues).
 
-For questions about the Solar Daytopper device itself, visit [solar-daytopper.com](https://www.solar-daytopper.com/faq/connecting-to-home-assistant).
+For questions about the Solar Daytopper device itself, visit [solar-daytopper.com](https://www.solar-daytopper.com/en).
