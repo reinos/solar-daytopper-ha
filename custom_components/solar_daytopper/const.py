@@ -1,7 +1,9 @@
 from datetime import timedelta
 
 DOMAIN = "solar_daytopper"
-SCAN_INTERVAL = timedelta(seconds=60)
+# The Daytopper module does fetch data every 5 minutes
+# So we can also set this interval to 5 minutes as it make no sense to fetch data more often
+SCAN_INTERVAL = timedelta(seconds=300)
 
 # Main totals first
 MAIN_SENSORS = [
