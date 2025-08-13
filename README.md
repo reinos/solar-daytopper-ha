@@ -11,7 +11,9 @@ With the Solar Daytopper module and accompanying app, you can compare the output
 This integration provides sensors for:
 - **Individual inverter data**: Current power and total energy for each connected inverter (Solax, Enphase, etc.)
 - **Total solar production**: Combined current power and total energy from all inverters
-- **System information**: WiFi strength, IP address, hostname, uptime, and firmware version
+- **System information**: WiFi strength/status, IP address, hostname, uptime, firmware version
+- **Timestamps**: Device uptime, last API call, and last data update with proper datetime formatting
+- **Smart data handling**: Energy totals never decrease (monotonic increasing) to prevent data inconsistencies
 
 ## Installation
 
@@ -46,10 +48,13 @@ The integration automatically creates sensors based on your setup:
 - `Solar Daytopper Current` - Total current power production (W)
 - `Solar Daytopper Total` - Total energy produced (kWh)
 - `Solar Daytopper WiFi Strength` - WiFi signal strength (dBm)
+- `Solar Daytopper WiFi Status` - WiFi connection status
 - `Solar Daytopper Hostname` - Device hostname
-- `Solar Daytopper IP` - Device IP address
-- `Solar Daytopper Uptime` - Device uptime
+- `Solar Daytopper Uptime` - Device boot time (timestamp)
+- `Solar Daytopper Last API Call` - Last API call timestamp
 - `Solar Daytopper Firmware Version` - Firmware version
+- `Solar Daytopper IP` - Device IP address
+- `Solar Daytopper Last Updated` - Last data fetch timestamp
 
 ### Dynamic Inverter Sensors
 For each connected inverter (e.g., Solax, Enphase):
@@ -60,4 +65,4 @@ For each connected inverter (e.g., Solax, Enphase):
 
 For issues related to this Home Assistant integration, please use the [GitHub Issues](https://github.com/reinos/solar-daytopper-hacs/issues).
 
-For questions about the Solar Daytopper device itself, visit [solar-daytopper.nl](https://www.solar-daytopper.com/faq/connecting-to-home-assistant).
+For questions about the Solar Daytopper device itself, visit [solar-daytopper.com](https://www.solar-daytopper.com/faq/connecting-to-home-assistant).
