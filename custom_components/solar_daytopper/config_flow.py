@@ -86,7 +86,7 @@ class DaytopperConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
 class DaytopperOptionsFlow(config_entries.OptionsFlow):
     def __init__(self, config_entry):
-        super().__init__(config_entry)
+        self.config_entry = config_entry
 
     async def async_step_init(self, user_input=None):
         errors = {}
@@ -103,9 +103,18 @@ class DaytopperOptionsFlow(config_entries.OptionsFlow):
                 if not connection_test:
                     errors["host"] = "cannot_connect"
                 else:
-                    # Make sure the host does not have a trailing slash
-                    user_input["host"] = host
-                    return self.async_create_entry(title="", data=user_input)
+                    # Update the config entry data instead of options
+                    new_data = dict(self.config_entry.data)
+                    new_data["host"] = host
+                    
+                    self.hass.config_entries.async_update_entry(
+                        self.config_entry, data=new_data
+                    )
+                    
+                    # Reload the integration to apply new settings
+                    await self.hass.config_entries.async_reload(self.config_entry.entry_id)
+                    
+                    return self.async_create_entry(title="", data={})
 
         schema = vol.Schema({
             vol.Required("host", default=self.config_entry.data.get("host", DEFAULT_HOST)): str,
