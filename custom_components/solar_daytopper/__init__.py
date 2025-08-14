@@ -75,16 +75,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     _LOGGER.debug("Setting up sensor platform")
     await hass.config_entries.async_forward_entry_setups(entry, ["sensor"])
     
-    # Set up config entry update listener
-    entry.async_on_unload(entry.add_update_listener(async_update_listener))
-    
     _LOGGER.debug("Solar Daytopper setup completed successfully")
 
     return True
-
-async def async_update_listener(hass: HomeAssistant, entry: ConfigEntry) -> None:
-    """Handle config entry update."""
-    await hass.config_entries.async_reload(entry.entry_id)
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     unload_ok = await hass.config_entries.async_unload_platforms(entry, ["sensor"])
