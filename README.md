@@ -22,7 +22,7 @@ This integration provides sensors for:
 2. Go to "Integrations" 
 3. Click the three dots in the top right corner
 4. Select "Custom repositories"
-5. Add this repository URL: `https://github.com/reinos/solar-daytopper-hacs`
+5. Add this repository URL: `https://github.com/reinos/solar-daytopper-ha`
 6. Select "Integration" as category
 7. Click "Add"
 8. Find "Solar Daytopper" in the integration list and install it
@@ -63,6 +63,6 @@ For each connected inverter (e.g., Solax, Enphase):
 
 ## Support
 
-For issues related to this Home Assistant integration, please use the [GitHub Issues](https://github.com/reinos/solar-daytopper-hacs/issues).
+For issues related to this Home Assistant integration, please use the [GitHub Issues](https://github.com/reinos/solar-daytopper-ha/issues).
 
 For questions about the Solar Daytopper device itself, visit [solar-daytopper.com](https://www.solar-daytopper.com/en).

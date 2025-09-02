@@ -6,7 +6,7 @@
   "dependencies": [],
   "documentation": "https://www.solar-daytopper.com/en/docs/home-assistant-integration",
   "iot_class": "local_polling",
-  "issue_tracker": "https://github.com/reinos/solar-daytopper-hacs/issues",
+  "issue_tracker": "https://github.com/reinos/solar-daytopper-ha/issues",
   "requirements": ["aiohttp"],
   "version": "1.2.0"
 }
