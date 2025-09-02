@@ -3,10 +3,10 @@ from datetime import datetime
 
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
-from homeassistant.helpers.entity import DeviceInfo
+from homeassistant.helpers.entity import DeviceInfo, EntityCategory
 from homeassistant.util import dt as dt_util
 
-from .const import DOMAIN, MAIN_SENSORS, SYSTEM_SENSORS, INVERTER_SENSOR_TEMPLATE
+from .const import DOMAIN, MAIN_SENSORS, DIAGNOSTIC_SENSORS, INVERTER_SENSOR_TEMPLATE
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -19,7 +19,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
     
     # 1. Add main total sensors first
     _LOGGER.debug("Adding main total sensors")
-    for name, path, unit, device_class, state_class, multiplier in MAIN_SENSORS:
+    for name, path, unit, device_class, state_class, multiplier, entity_category in MAIN_SENSORS:
         unique_id = f"{DOMAIN}_{name.lower().replace(' ', '_')}"
         entities.append(
             SolarDaytopperSensor(
@@ -32,6 +32,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
                 unique_id,
                 multiplier,
                 host_url,
+                entity_category,
             )
         )
 
@@ -43,7 +44,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
         
         for inverter_name in solar_readings.keys():
             # Create sensors for each inverter
-            for sensor_type, field, unit, device_class, state_class, multiplier in INVERTER_SENSOR_TEMPLATE:
+            for sensor_type, field, unit, device_class, state_class, multiplier, entity_category in INVERTER_SENSOR_TEMPLATE:
                 name = f"Solar Daytopper {inverter_name.title()} {sensor_type}"
                 path = ["solarReadings", inverter_name, field]
                 unique_id = f"{DOMAIN}_{name.lower().replace(' ', '_')}"
@@ -59,6 +60,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
                         unique_id,
                         multiplier,
                         host_url,
+                        entity_category,
                     )
                 )
                 
@@ -67,9 +69,9 @@ async def async_setup_entry(hass, entry, async_add_entities):
     else:
         _LOGGER.debug("No solarReadings data found or coordinator data is empty")
 
-    # 3. Add system info sensors last
-    _LOGGER.debug("Adding system info sensors")
-    for name, path, unit, device_class, state_class, multiplier in SYSTEM_SENSORS:
+    # 3. Add diagnostic sensors last
+    _LOGGER.debug("Adding diagnostic sensors")
+    for name, path, unit, device_class, state_class, multiplier, entity_category in DIAGNOSTIC_SENSORS:
         unique_id = f"{DOMAIN}_{name.lower().replace(' ', '_')}"
         entities.append(
             SolarDaytopperSensor(
@@ -82,6 +84,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
                 unique_id,
                 multiplier,
                 host_url,
+                entity_category,
             )
         )
 
@@ -90,7 +93,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
     _LOGGER.debug("Solar Daytopper sensor setup completed")
 
 class SolarDaytopperSensor(CoordinatorEntity, SensorEntity):
-    def __init__(self, coordinator, name, path, unit, device_class, state_class, unique_id, multiplier, host_url=None):
+    def __init__(self, coordinator, name, path, unit, device_class, state_class, unique_id, multiplier, host_url=None, entity_category=None):
         super().__init__(coordinator)
         self._attr_name = name
         self._path = path
@@ -98,6 +101,7 @@ class SolarDaytopperSensor(CoordinatorEntity, SensorEntity):
         self._attr_device_class = device_class
         self._attr_state_class = state_class
         self._attr_unique_id = unique_id
+        self._attr_entity_category = entity_category
         self._multiplier = multiplier
         self._last_value = None 
         
